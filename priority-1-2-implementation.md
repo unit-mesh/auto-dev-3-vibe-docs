@@ -500,3 +500,4 @@ Agent → channel.emit(Event) → UI
 - [agent-integration-guide.md](agent-integration-guide.md) - 使用指南
 - [agent-refactor-implementation-summary.md](agent-refactor-implementation-summary.md) - Phase 1-3 总结
 
+
