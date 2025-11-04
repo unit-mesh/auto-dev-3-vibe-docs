@@ -2,6 +2,20 @@
 
 这个文档说明如何使用 mpp-ui 的发布测试系统。
 
+## 快速开始
+
+想要快速创建一个测试发布？只需运行：
+
+```bash
+# 1. 本地测试构建
+./docs/test-scripts/compose-release-test.sh
+
+# 2. 创建发布（如果测试通过）
+./docs/test-scripts/create-compose-release.sh 1.0.0-test
+```
+
+就这么简单！GitHub Actions 会自动构建 Android APK 和 Desktop 包。
+
 ## 概述
 
 我们创建了一个 GitHub Action 工作流来自动构建和发布 mpp-ui 的 Android 和 Desktop 版本。该系统支持：
@@ -12,9 +26,11 @@
 ## 文件结构
 
 ```
-.github/workflows/compose-release-test.yml  # GitHub Action 工作流
-docs/test-scripts/compose-release-test.sh   # 本地测试脚本
-docs/test-scripts/README-compose-release.md # 本文档
+.github/workflows/compose-release-test.yml    # GitHub Action 工作流
+docs/test-scripts/compose-release-test.sh     # 本地测试脚本
+docs/test-scripts/create-compose-release.sh   # 发布创建脚本
+docs/test-scripts/test-workflow-isolation.sh  # 工作流隔离测试
+docs/test-scripts/README-compose-release.md   # 本文档
 ```
 
 ## 本地测试
@@ -35,7 +51,26 @@ docs/test-scripts/README-compose-release.md # 本文档
 
 ## 触发 GitHub Action
 
-### 方法 1: 通过标签触发（推荐）
+### 方法 1: 使用发布脚本（推荐）
+
+使用提供的脚本自动创建发布：
+
+```bash
+# 交互式创建发布
+./docs/test-scripts/create-compose-release.sh
+
+# 或直接指定版本
+./docs/test-scripts/create-compose-release.sh 1.0.0-test
+```
+
+该脚本会：
+1. 验证版本格式
+2. 检查是否有未提交的更改
+3. 可选运行本地构建测试
+4. 创建并推送标签
+5. 提供监控链接
+
+### 方法 2: 手动创建标签
 
 创建以 `compose-` 开头的标签：
 
@@ -47,7 +82,7 @@ git tag compose-v1.0.0-test
 git push origin compose-v1.0.0-test
 ```
 
-### 方法 2: 手动触发
+### 方法 3: 手动触发
 
 1. 访问 GitHub 仓库的 Actions 页面
 2. 选择 "Compose Release Test" 工作流
@@ -88,6 +123,11 @@ git push origin compose-v1.0.0-test
 - 建议格式：`compose-v<version>-<suffix>`
 - 例如：`compose-v1.0.0-test`, `compose-v1.0.0-beta`
 
+### 工作流隔离
+- `compose-*` 标签只触发 compose 发布工作流
+- 其他标签只触发主要的 IntelliJ 插件发布工作流
+- 两个工作流完全隔离，不会相互干扰
+
 ### 发布类型
 - 所有通过标签触发的构建都会创建 **预发布版本**
 - 如需正式发布，需要在 GitHub Release 页面手动编辑
@@ -107,6 +147,10 @@ git push origin compose-v1.0.0-test
 3. **Desktop 构建失败**
    - 检查 JDK 版本（需要 Java 17）
    - 确保平台特定的构建工具已安装
+
+4. **工作流冲突**
+   - 如果主要的 release.yml 被意外触发，检查标签是否以 `compose-` 开头
+   - 运行 `./docs/test-scripts/test-workflow-isolation.sh` 验证工作流隔离
 
 ### 调试步骤
 
