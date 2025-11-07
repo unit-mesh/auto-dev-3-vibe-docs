@@ -1,0 +1,41 @@
+---
+title: DevIns Lexer 修复演示
+description: 演示方案 1 的修复效果 - 只在行首或空白后识别特殊字符
+---
+
+## 测试用例 1: Email 地址不再被误识别
+
+普通文本中的 email 地址应该完整保留：
+Send email to user@example.com for more info.
+
+## 测试用例 2: 文件路径不再被误识别
+
+行内路径应该保留：
+The configuration file is at path:/home/user/config.yaml end.
+
+## 测试用例 3: Markdown 列表正常工作
+
+- Added OpenAI API key configuration
+- spring-ai-openai-spring-boot-starter dependency
+- Set default model to GPT-3.5-turbo
+
+## 测试用例 4: 价格符号不被误识别
+
+This item costs $100 and that one is $50.
+
+## 测试用例 5: 行首命令仍然正常识别
+
+/file test.txt
+
+## 测试用例 6: 空白后的特殊字符正常识别
+
+Please call @agent for help with this issue.
+
+## 测试用例 7: 行首的 agent 正常识别
+
+@clarify What is the purpose of this function?
+
+## 测试用例 8: 行首的变量正常识别
+
+$variable is being used in this context.
+
