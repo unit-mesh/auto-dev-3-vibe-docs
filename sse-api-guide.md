@@ -8,12 +8,22 @@ mpp-server 提供了基于 Server-Sent Events (SSE) 的流式 API，允许客户
 
 ### GET /api/agent/stream
 
-流式执行 Agent 任务，实时返回执行过程中的事件。
+流式执行 Agent 任务，实时返回执行过程中的事件。支持两种模式：
+
+1. **使用现有项目**: 提供 `projectId`，从已配置的项目执行任务
+2. **Git Clone 模式**: 提供 `gitUrl`，自动 clone 代码库后执行任务
 
 **请求参数（Query Parameters）：**
 
-- `projectId` (必需): 项目 ID
+必需参数：
+- `projectId` (必需): 项目 ID（作为工作目录名）
 - `task` (必需): 要执行的任务描述
+
+Git Clone 参数（可选）：
+- `gitUrl` (可选): Git 仓库 URL（如果提供，将自动 clone）
+- `branch` (可选): Git 分支名（默认为 main）
+- `username` (可选): Git 用户名（私有仓库）
+- `password` (可选): Git 密码或 Token（私有仓库）
 
 **请求头：**
 
@@ -91,7 +101,39 @@ data: {"toolName":"read_file","success":true,"output":"..."}
 }
 ```
 
-### 5. error
+### 5. clone_log
+Git clone 日志输出（仅在使用 git clone 模式时）
+
+```
+event: clone_log
+data: {"message":"Cloning into '.'...","isError":false}
+```
+
+**数据格式：**
+```typescript
+{
+  message: string,   // 日志消息
+  isError: boolean   // 是否为错误日志
+}
+```
+
+### 6. clone_progress
+Git clone 进度更新（仅在使用 git clone 模式时）
+
+```
+event: clone_progress
+data: {"stage":"Cloning repository","progress":50}
+```
+
+**数据格式：**
+```typescript
+{
+  stage: string,      // 当前阶段描述
+  progress: number    // 进度百分比（0-100）
+}
+```
+
+### 7. error
 错误事件
 
 ```
@@ -106,7 +148,7 @@ data: {"message":"Error description"}
 }
 ```
 
-### 6. complete
+### 8. complete
 任务完成事件
 
 ```
@@ -138,8 +180,21 @@ data: {"success":true,"message":"Task completed","iterations":3,"steps":[...],"e
 
 ### 使用 curl
 
+#### 方式 1: 使用现有项目
 ```bash
 curl -N "http://localhost:8080/api/agent/stream?projectId=my-project&task=list%20files" \
+  -H "Accept: text/event-stream"
+```
+
+#### 方式 2: Git Clone 模式（公开仓库）
+```bash
+curl -N "http://localhost:8080/api/agent/stream?projectId=my-new-project&task=analyze%20the%20code&gitUrl=https%3A%2F%2Fgithub.com%2Fuser%2Frepo.git&branch=main" \
+  -H "Accept: text/event-stream"
+```
+
+#### 方式 3: Git Clone 模式（私有仓库）
+```bash
+curl -N "http://localhost:8080/api/agent/stream?projectId=private-project&task=review%20code&gitUrl=https%3A%2F%2Fgithub.com%2Fuser%2Fprivate-repo.git&username=myuser&password=mytoken" \
   -H "Accept: text/event-stream"
 ```
 
@@ -170,6 +225,20 @@ eventSource.addEventListener('tool_call', (e) => {
 eventSource.addEventListener('tool_result', (e) => {
   const data = JSON.parse(e.data);
   console.log(`✓ ${data.toolName}: ${data.success ? 'Success' : 'Failed'}`);
+});
+
+eventSource.addEventListener('clone_log', (e) => {
+  const data = JSON.parse(e.data);
+  if (data.isError) {
+    console.error(`🔴 ${data.message}`);
+  } else {
+    console.log(`📦 ${data.message}`);
+  }
+});
+
+eventSource.addEventListener('clone_progress', (e) => {
+  const data = JSON.parse(e.data);
+  console.log(`📊 ${data.stage} - ${data.progress}%`);
 });
 
 eventSource.addEventListener('error', (e) => {
@@ -249,10 +318,18 @@ cd /Volumes/source/ai/autocrud
 
 ## 测试
 
+### 测试现有项目
 使用提供的测试脚本：
 
 ```bash
 ./docs/test-scripts/test-sse-api.sh
+```
+
+### 测试 Git Clone 功能
+使用 Git Clone 测试脚本：
+
+```bash
+./docs/test-scripts/test-git-clone-sse.sh
 ```
 
 ## 技术实现
@@ -265,10 +342,17 @@ cd /Volumes/source/ai/autocrud
 ## 注意事项
 
 1. **连接超时**: SSE 连接可能会因为网络超时而断开，客户端应实现重连机制
-2. **项目ID**: 请先通过 `GET /api/projects` 获取可用的项目列表
+2. **项目ID**: 
+   - 使用现有项目时：通过 `GET /api/projects` 获取可用的项目列表
+   - Git Clone 模式：可以使用任意唯一标识符作为项目 ID
 3. **任务描述**: `task` 参数应该是清晰的自然语言描述
-4. **URL 编码**: 查询参数需要进行 URL 编码（特别是 task 参数）
+4. **URL 编码**: 查询参数需要进行 URL 编码（特别是 `task` 和 `gitUrl` 参数）
 5. **LLM 配置**: 服务器使用 `~/.autodev/config.yaml` 中的 LLM 配置
+6. **Git 凭证**: 
+   - 对于公开仓库：只需提供 `gitUrl` 即可
+   - 对于私有仓库：需要提供 `username` 和 `password`（或 Personal Access Token）
+7. **Clone 位置**: 代码会被 clone 到临时目录，任务完成后可以清理
+8. **Git 命令**: 需要系统安装 `git` 命令行工具
 
 ## 相关文件
 
