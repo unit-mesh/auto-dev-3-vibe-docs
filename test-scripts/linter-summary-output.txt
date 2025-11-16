@@ -1,0 +1,120 @@
+================================================================================
+LINTER SUMMARY TEST - User-Focused Output
+================================================================================
+
+TEST CASE 1: Multiple files with various issues
+--------------------------------------------------------------------------------
+## Lint Results Summary
+Files analyzed: 5 | Files with issues: 3
+Total issues: 10 (❌ 3 errors, ⚠️ 7 warnings, ℹ️ 0 info)
+Linters executed: detekt
+
+### ❌ Files with Errors (2)
+**src/main/kotlin/UserService.kt** (2 errors, 3 warnings)
+  - Line 15: Nullable type expected but non-null type found [type-mismatch]
+  - Line 23: Unresolved reference: userId [unresolved-reference]
+  - Line 45: Function name should be in camelCase [naming-convention]
+  - Line 67: Consider using let instead of if-null check [idiomatic-kotlin]
+  - Line 89: Magic number should be extracted to constant [magic-number]
+
+**src/main/kotlin/ProductRepository.kt** (1 errors, 2 warnings)
+  - Line 12: Missing return statement [missing-return]
+  - Line 34: Unused import [unused-import]
+  - Line 56: Function too complex, consider refactoring [complexity]
+
+### ⚠️ Files with Warnings (1)
+**src/main/kotlin/utils/StringExtensions.kt** (2 warnings)
+  - Line 8: Function parameter could be immutable [var-could-be-val]
+  - Line 15: Documentation missing for public function [missing-kdoc]
+
+
+TEST CASE 2: Clean code - no issues found
+--------------------------------------------------------------------------------
+## Lint Results Summary
+Files analyzed: 3 | Files with issues: 0
+Total issues: 0 (❌ 0 errors, ⚠️ 0 warnings, ℹ️ 0 info)
+Linters executed: detekt, ktlint
+
+✅ No issues found!
+
+
+TEST CASE 3: File with many issues (shows top 5 + truncation)
+--------------------------------------------------------------------------------
+## Lint Results Summary
+Files analyzed: 1 | Files with issues: 1
+Total issues: 10 (❌ 3 errors, ⚠️ 7 warnings, ℹ️ 0 info)
+Linters executed: detekt
+
+### ❌ Files with Errors (1)
+**src/main/kotlin/LegacyCode.kt** (3 errors, 7 warnings)
+  - Line 10: Issue 1: Sample problem description [rule-1]
+  - Line 20: Issue 2: Sample problem description [rule-2]
+  - Line 30: Issue 3: Sample problem description [rule-3]
+  - Line 40: Issue 4: Sample problem description [rule-4]
+  - Line 50: Issue 5: Sample problem description [rule-5]
+  - ... and 5 more issues
+
+
+TEST CASE 4: Multiple linters on different file types
+--------------------------------------------------------------------------------
+## Lint Results Summary
+Files analyzed: 4 | Files with issues: 2
+Total issues: 3 (❌ 1 errors, ⚠️ 2 warnings, ℹ️ 0 info)
+Linters executed: eslint, ruff, detekt
+
+### ❌ Files with Errors (1)
+**src/components/App.tsx** (1 errors, 1 warnings)
+  - Line 25: React Hook "useState" is called conditionally [react-hooks/rules-of-hooks]
+  - Line 42: Missing dependency in useEffect hook [react-hooks/exhaustive-deps]
+
+### ⚠️ Files with Warnings (1)
+**src/services/api.py** (1 warnings)
+  - Line 18: Line too long (95 > 88 characters) [E501]
+
+
+================================================================================
+USER PERSPECTIVE ANALYSIS
+================================================================================
+
+Key observations about the new summary format:
+
+1. ✅ PRIORITY FOCUS: Errors are shown first, then warnings, then info
+   - Users immediately see critical issues that block the build
+   - Can quickly assess if they need to fix something before code review
+
+2. ✅ ACTIONABLE INFORMATION: Each issue shows:
+   - Exact line number (where to look)
+   - Clear message (what's wrong)
+   - Rule name (for reference/learning)
+   - No noise about linter installation/availability
+
+3. ✅ CONCISE BUT COMPLETE:
+   - Top-level stats give quick overview
+   - Issues are truncated to top 5 per file (with "more" indicator)
+   - Avoids overwhelming output while showing what matters
+
+4. ✅ MULTI-FILE CLARITY:
+   - Files grouped by severity
+   - Easy to see which files need immediate attention
+   - File paths are prominent
+
+5. ✅ MULTI-LINTER SUPPORT:
+   - Shows which linters actually ran
+   - Handles different linters for different file types
+   - Unified output format regardless of linter source
+
+6. ✅ CLEAN CODE FEEDBACK:
+   - When no issues found, gives positive confirmation
+   - Users know linters ran successfully
+
+What we DON'T show (and don't need to):
+- Linter installation instructions (not relevant during code review)
+- Which files could be linted but weren't (not actionable)
+- Linter version numbers (rarely matters for the review)
+- File-to-linter mappings (implicit from execution)
+
+This summary provides exactly what a developer needs during code review:
+- What files have problems?
+- How serious are they?
+- What are the specific issues?
+- Where do I need to look?
