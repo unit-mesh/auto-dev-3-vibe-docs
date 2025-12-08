@@ -24,16 +24,16 @@
 
 根据参考文档，我们需要实现以下核心能力：
 
-| Temporal 特性 | 业务价值 | 实现优先级 |
-|--------------|---------|-----------|
-| **持久化执行 (Durable Execution)** | Agent 执行过程崩溃后可恢复 | 🔴 P0 |
-| **事件溯源 (Event Sourcing)** | 记录所有执行步骤，支持审计和重放 | 🔴 P0 |
-| **确定性重放 (Deterministic Replay)** | 通过重放历史恢复到确切状态 | 🟡 P1 |
-| **长时间运行 (Long-running Workflows)** | 支持天/周级别的任务（如等待审批） | 🟡 P1 |
-| **Signal/Query/Update** | 外部与运行中 Workflow 交互 | 🔴 P0 |
-| **人机回环 (Human-in-the-Loop)** | 任务暂停等待人类决策 | 🟢 P2 |
-| **多智能体协同 (Multi-Agent Swarm)** | 父子任务、并行执行 | 🟢 P2 |
-| **侧信道流式传输** | LLM 流式输出与持久化分离 | 🔵 P3 |
+| Temporal 特性                        | 业务价值               | 实现优先级 |
+|------------------------------------|--------------------|-------|
+| **持久化执行 (Durable Execution)**      | Agent 执行过程崩溃后可恢复   | 🔴 P0 |
+| **事件溯源 (Event Sourcing)**          | 记录所有执行步骤，支持审计和重放   | 🔴 P0 |
+| **确定性重放 (Deterministic Replay)**   | 通过重放历史恢复到确切状态      | 🟡 P1 |
+| **长时间运行 (Long-running Workflows)** | 支持天/周级别的任务（如等待审批）  | 🟡 P1 |
+| **Signal/Query/Update**            | 外部与运行中 Workflow 交互 | 🔴 P0 |
+| **人机回环 (Human-in-the-Loop)**       | 任务暂停等待人类决策         | 🟢 P2 |
+| **多智能体协同 (Multi-Agent Swarm)**     | 父子任务、并行执行          | 🟢 P2 |
+| **侧信道流式传输**                        | LLM 流式输出与持久化分离     | 🔵 P3 |
 
 ### 1.2 典型使用场景
 
