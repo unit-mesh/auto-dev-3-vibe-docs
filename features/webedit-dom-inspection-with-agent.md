@@ -9,9 +9,40 @@
 ### 1. DOM 元素标签系统（ElementTag）
 - **自动标签创建**：选择 DOM 元素时自动创建带有元素信息的标签（tag-like UI）
 - **标签展示**：使用 Chip 样式展示元素标签，包含图标和元素摘要信息
+- **查看详情**：点击标签上的 ℹ️ 图标，将完整的 HTML 代码和所有属性添加到聊天历史中
 - **双击移除**：双击标签即可移除
-- **悬停提示**：鼠标悬停显示元素的详细属性信息
 - **LLM 上下文生成**：自动将元素信息格式化为适合 LLM 理解的上下文
+
+#### 详情显示功能
+点击 ℹ️ 图标后，在聊天历史中显示：
+```markdown
+### 📋 Element Details
+
+**HTML Code:**
+```html
+<button class="clean-btn toCollapsibleButton_TOQP">
+  改为英语
+</button>
+```
+
+**Tag Name:** `<button>`
+
+**CSS Selector:** `button.clean-btn.toCollapsibleButton_TOQP`
+
+**Attributes:**
+- `class` = `"clean-btn toCollapsibleButton_TOQP"`
+
+**Text Content:** "改为英语"
+
+**💡 Source Location Hint:**
+> 可能是 React 组件: ToCollapsibleButton (基于类名 toCollapsibleButton_TOQP)
+```
+
+**优势：**
+- ✅ 信息保留在聊天历史中，方便对比和查阅
+- ✅ 可以复制 HTML 代码
+- ✅ Markdown 格式美观易读
+- ✅ 包含源码定位提示
 
 ### 2. 源代码映射工具（WebElementSourceMapperTool）
 CodingAgent 可以使用此工具将 DOM 元素映射到项目源代码：
@@ -181,18 +212,25 @@ private fun collectFilesRecursive(
 3. **选择 DOM 元素**
    - 在网页中点击要分析的元素
    - 自动创建元素标签显示在输入框上方
+   - 点击标签上的 **ℹ️ 图标**查看完整的 HTML 代码和所有属性信息
 
-4. **输入分析请求**
+4. **查看元素详情**（可选）
+   - **HTML Code**: 查看完整的元素 HTML 结构
+   - **Attributes**: 查看所有属性（id, class, data-* 等）
+   - **Source Hint**: 查看推测的源代码位置
+   - 这些信息帮助你快速定位 React/Vue/Angular 组件源码
+
+5. **输入分析请求**
    - 在输入框中输入问题或请求，例如：
      - "这个按钮在哪个文件中定义？"
      - "帮我修改这个按钮的文字"
      - "这个元素的样式在哪里定义的？"
 
-5. **查看 Agent 分析结果**
+6. **查看 Agent 分析结果**
    - 左侧聊天面板自动展开
    - 显示 Agent 的分析结果、文件位置、代码建议等
 
-6. **继续对话**
+7. **继续对话**
    - 可以继续追问或提出新的修改请求
    - 历史对话保留在聊天面板中
 
