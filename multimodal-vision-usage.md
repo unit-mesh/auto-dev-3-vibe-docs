@@ -223,3 +223,4 @@ val service = MultimodalLLMService.createWithoutCos(
 - [腾讯云 COS 文档](https://cloud.tencent.com/document/product/436)
 - [图片压缩库 Compressor](https://github.com/zetbaitsu/Compressor)
 
+
