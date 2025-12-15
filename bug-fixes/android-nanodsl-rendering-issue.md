@@ -104,15 +104,26 @@
 ## 已实施的修复
 
 ### 1. 添加 Android 依赖
-在 `mpp-ui/build.gradle.kts` 的 `androidMain` 中添加了 `xiuper-ui` 依赖：
+在 `mpp-ui/build.gradle.kts` 的 `androidMain` 中添加了 `xiuper-ui` 依赖，并解决了依赖冲突：
 ```kotlin
 val androidMain by getting {
     dependencies {
-        implementation(project(":xiuper-ui"))  // ✅ 已添加
+        implementation(project(":xiuper-ui")) {
+            exclude(group = "org.jetbrains.compose", module = "ui")
+            exclude(group = "io.github.oshai", module = "kotlin-logging-jvm")
+        }
+        
+        // Kotlin Logging for Android (use Android version instead of JVM version)
+        implementation("io.github.oshai:kotlin-logging-android-debug:${libs.versions.kotlinLogging.get()}")
         // ... 其他依赖
     }
 }
 ```
+
+**依赖冲突解决**：
+- `xiuper-ui` 依赖了 `kotlin-logging-jvm`（JVM 版本）
+- Android 平台需要使用 `kotlin-logging-android-debug`（Android 版本）
+- 通过 `exclude` 排除 JVM 版本，并显式添加 Android 版本
 
 ### 2. 移动 StatefulNanoRenderer 到 commonMain
 将 `StatefulNanoRenderer.kt` 从 `jvmMain` 移动到 `commonMain`，使其可以在 Android 和 JVM 平台上共享：
