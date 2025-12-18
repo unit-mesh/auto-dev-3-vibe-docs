@@ -184,9 +184,81 @@ Example usage (pseudo):
 
 ## Deliverables
 - `xiuper-fs` module with:
-  - core types + mount router
-  - REST-FS backend skeleton + schema model
-  - Ktor http client expect/actual
-  - unit tests for routing + schema parsing
+  - ✅ core types + mount router
+  - ✅ REST-FS backend skeleton + schema model
+  - ✅ DB-FS backend with SQLDelight + migration framework (v1→v2 xattr support)
+  - ✅ Ktor http client expect/actual
+  - ✅ Policy & audit system (MountPolicy, FsAuditEvent, FsAuditCollector)
+  - ✅ Compose integration adapter (FsRepository for StateFlow-based reactive access)
+  - ✅ unit tests for routing + schema parsing + migration + conformance
 - Documentation: this file
+
+## Implementation Status (Dec 2024)
+
+### Completed ✅
+1. **Core VFS Infrastructure**
+   - `XiuperFileSystem` interface with POSIX-inspired operations
+   - `FsBackend` SPI for pluggable backends
+   - `XiuperVfs` router with mount point resolution
+   - `Mount` with read-only flag and policy hooks
+
+2. **Backends**
+   - `RestFsBackend`: HTTP-based virtual filesystem with schema support
+   - `DbFsBackend`: SQLDelight-backed database filesystem
+   - `InMemoryFsBackend`: In-memory testing backend
+   - Platform-specific drivers: JVM/Android/iOS (SQLite), WASM (sql.js), JS/Node (explicit unsupported)
+
+3. **Migration Framework**
+   - `Migration` interface for database schema upgrades
+   - `MigrationRegistry` with path discovery
+   - PRAGMA user_version tracking
+   - v1→v2 migration with FsXattr table for extended attributes
+   - Comprehensive upgrade tests
+
+4. **Security & Policy**
+   - `MountPolicy` for access control (AllowAll, ReadOnly presets)
+   - `FsAuditEvent` + `FsAuditCollector` for operation tracking
+   - Integrated audit logs in XiuperVfs
+   - Read-only mount enforcement
+
+5. **Compose Integration**
+   - `FsRepository` adapter for reactive filesystem access
+   - StateFlow-based `observeDir`/`observeFile`/`observeText` methods
+   - Automatic refresh on write/delete operations
+   - Cache management and invalidation
+
+6. **Testing**
+   - Capability-aware conformance tests (POSIX subset)
+   - Migration infrastructure tests (8/8 passing)
+   - REST backend conformance validation
+   - Cross-platform test coverage (JVM, common)
+
+### Pending / Future Work 🚧
+1. **REST-FS Advanced Features**
+   - Field projection (`/fields/{name}`)
+   - Magic files (`new` for create)
+   - Control files (`query` + `results/`)
+   - Pagination as infinite directories
+
+2. **MCP Backend (Phase 3)**
+   - MCP resources/list ↔ directory listing
+   - MCP resources/read ↔ file read
+   - MCP tools ↔ executable files
+   - Multi-platform transport (stdio on JVM/Android, HTTP on WASM/browser)
+
+3. **Advanced Policies**
+   - Path allowlist/denylist (`PathFilterPolicy`)
+   - Delete approval workflow (`DeleteApprovalPolicy`)
+   - Rate limiting hooks
+
+4. **Monitoring & Observability**
+   - Persistent audit log storage
+   - Metrics collection (latency histograms, error rates)
+   - Integration with analytics services
+
+5. **Documentation**
+   - API documentation (KDoc)
+   - Migration guide for backend implementers
+   - REST schema examples
+   - Compose UI integration patterns
 
