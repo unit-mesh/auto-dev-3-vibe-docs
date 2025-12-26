@@ -4,7 +4,7 @@ import cc.unitmesh.agent.AgentTask
 import cc.unitmesh.agent.CodingAgent
 import cc.unitmesh.agent.config.McpToolConfigService
 import cc.unitmesh.devins.ui.config.ConfigManager
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
@@ -15,7 +15,7 @@ fun main() = runBlocking {
     val mcpToolConfigService = McpToolConfigService(toolConfig)
     
     // Create a mock LLM service
-    val llmService = object : KoogLLMService {
+    val llmService = object : LLMService {
         override suspend fun completion(prompt: String): String = "Mock response"
         override suspend fun streamCompletion(prompt: String, onChunk: (String) -> Unit): String = "Mock response"
     }

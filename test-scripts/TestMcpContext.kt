@@ -5,7 +5,7 @@ import cc.unitmesh.agent.CodingAgent
 import cc.unitmesh.agent.config.McpToolConfigService
 import cc.unitmesh.agent.render.CodingAgentRenderer
 import cc.unitmesh.devins.ui.config.ConfigManager
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import cc.unitmesh.llm.ModelConfig
 import cc.unitmesh.llm.LLMProviderType
 import kotlinx.coroutines.runBlocking
@@ -51,7 +51,7 @@ fun main() = runBlocking {
             maxTokens = 1000,
             baseUrl = "https://api.deepseek.com"
         )
-        val llmService = KoogLLMService(modelConfig)
+        val llmService = LLMService(modelConfig)
         
         // Create CodingAgent
         val codingAgent = CodingAgent(

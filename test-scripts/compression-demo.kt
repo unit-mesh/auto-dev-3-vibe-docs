@@ -12,7 +12,7 @@
 
 @file:DependsOn("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import cc.unitmesh.llm.ModelConfig
 import cc.unitmesh.llm.LLMProviderType
 import cc.unitmesh.llm.compression.CompressionConfig
@@ -52,7 +52,7 @@ fun main() = runBlocking {
     // 2. 创建 LLM 服务和对话管理器
     println("\n🔧 2. 初始化服务")
     
-    val llmService = KoogLLMService.create(modelConfig, compressionConfig)
+    val llmService = LLMService.create(modelConfig, compressionConfig)
     val conversationManager = ConversationManager(
         llmService = llmService,
         systemPrompt = "你是一个专业的编程助手，帮助用户解决技术问题。",

@@ -4,7 +4,7 @@
  * 本示例展示如何使用 mpp-core 的上下文压缩功能
  */
 
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import cc.unitmesh.llm.ModelConfig
 import cc.unitmesh.llm.LLMProviderType
 import cc.unitmesh.llm.compression.CompressionConfig
@@ -36,7 +36,7 @@ fun main() = runBlocking {
     )
     
     // 3. 创建 LLM 服务
-    val llmService = KoogLLMService.create(modelConfig, compressionConfig)
+    val llmService = LLMService.create(modelConfig, compressionConfig)
     
     println("✅ LLM 服务初始化完成")
     println("   模型: ${modelConfig.modelName}")

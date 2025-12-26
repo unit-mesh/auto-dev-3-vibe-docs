@@ -5,7 +5,7 @@ import cc.unitmesh.agent.CodingAgent
 import cc.unitmesh.agent.config.McpToolConfigService
 import cc.unitmesh.agent.render.CodingAgentRenderer
 import cc.unitmesh.devins.ui.config.ConfigManager
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import kotlinx.coroutines.runBlocking
 
 class TestRenderer : CodingAgentRenderer {
@@ -25,7 +25,7 @@ class TestRenderer : CodingAgentRenderer {
         println("⚠️ Repeat Warning: $toolName called $count times")
 }
 
-class MockLLMService : KoogLLMService {
+class MockLLMService : LLMService {
     override suspend fun completion(prompt: String): String {
         println("🤖 [MockLLM] Received prompt with ${prompt.length} characters")
         // Look for tool list in the prompt

@@ -147,7 +147,7 @@ suspend fun testToolOrchestration() {
 }
 
 // Mock implementations for testing
-class MockKoogLLMService : KoogLLMService {
+class MockKoogLLMService : LLMService {
     // Simplified mock implementation
 }
 

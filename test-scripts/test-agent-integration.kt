@@ -238,7 +238,7 @@ suspend fun testCodebaseInvestigationWorkflow() {
 }
 
 // Mock implementations for testing
-class MockKoogLLMService : KoogLLMService {
+class MockKoogLLMService : LLMService {
     override suspend fun streamPrompt(
         userPrompt: String,
         fileSystem: FileSystem,

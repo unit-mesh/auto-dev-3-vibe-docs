@@ -6,7 +6,7 @@
  * 这个脚本将：
  * 1. 测试 WriteFileTool 的多行写入能力
  * 2. 使用 CodingAgentPromptRenderer 生成提示词
- * 3. 调用 KoogLLMService 测试模型对多行代码生成的支持
+ * 3. 调用 LLMService 测试模型对多行代码生成的支持
  */
 
 @file:DependsOn("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
@@ -247,7 +247,7 @@ suspend fun testModelCodeGeneration() {
     println("   📤 发送测试提示词...")
     println("   📝 提示词: ${testPrompt.take(100)}...")
     
-    // 这里应该调用实际的 KoogLLMService，但由于依赖复杂，我们模拟响应
+    // 这里应该调用实际的 LLMService，但由于依赖复杂，我们模拟响应
     val mockResponse = simulateModelResponse()
     
     println("   📥 模型响应:")

@@ -175,8 +175,8 @@ fun main() {
         failed++
     }
     
-    // Test 8: KoogLLMService 验证无效配置
-    println("\n📋 Test 8: KoogLLMService 应拒绝无效配置")
+    // Test 8: LLMService 验证无效配置
+    println("\n📋 Test 8: LLMService 应拒绝无效配置")
     try {
         val invalidConfig = ModelConfig(
             provider = LLMProviderType.CUSTOM_OPENAI_BASE,
@@ -186,11 +186,11 @@ fun main() {
         )
         
         try {
-            KoogLLMService.create(invalidConfig)
-            println("❌ KoogLLMService 应该拒绝无效配置")
+            LLMService.create(invalidConfig)
+            println("❌ LLMService 应该拒绝无效配置")
             failed++
         } catch (e: IllegalArgumentException) {
-            println("✅ KoogLLMService 正确拒绝无效配置")
+            println("✅ LLMService 正确拒绝无效配置")
             println("   - error message: ${e.message}")
             passed++
         }

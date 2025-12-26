@@ -160,7 +160,7 @@ suspend fun testErrorHandling() {
 }
 
 // Mock implementations for testing
-class MockKoogLLMService : KoogLLMService {
+class MockKoogLLMService : LLMService {
     // Simplified mock implementation
     // In real tests, you would use a proper mocking framework
 }

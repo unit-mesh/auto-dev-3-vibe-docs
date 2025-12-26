@@ -5,7 +5,7 @@
  * 
  * 这个脚本使用真实的 mpp-core 组件来测试：
  * 1. CodingAgentPromptRenderer 生成提示词
- * 2. KoogLLMService 调用模型
+ * 2. LLMService 调用模型
  * 3. WriteFileTool 处理多行代码写入
  */
 
@@ -49,7 +49,7 @@ fun main() = runBlocking {
     // 4. 测试多行内容写入
     testRealMultilineWriting()
     
-    // 5. 模拟模型调用（实际项目中应该使用真实的 KoogLLMService）
+    // 5. 模拟模型调用（实际项目中应该使用真实的 LLMService）
     println("\n🤖 模拟模型调用...")
     val modelResponse = simulateModelCall(prompt, config)
     

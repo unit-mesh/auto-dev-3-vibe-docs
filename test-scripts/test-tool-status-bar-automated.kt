@@ -7,7 +7,7 @@ import cc.unitmesh.agent.tool.ToolCategory
 import cc.unitmesh.devins.ui.compose.agent.CodingAgentViewModel
 import cc.unitmesh.devins.ui.compose.agent.ToolLoadingStatus
 import cc.unitmesh.devins.ui.config.ConfigManager
-import cc.unitmesh.llm.KoogLLMService
+import cc.unitmesh.llm.LLMService
 import cc.unitmesh.llm.ModelConfig
 import cc.unitmesh.llm.LLMProviderType
 import kotlinx.coroutines.runBlocking
@@ -60,7 +60,7 @@ class ToolStatusBarTest {
         println("\n📋 测试 2: MCP 状态更新")
         
         // 创建模拟的 ViewModel
-        val mockLLMService = KoogLLMService(ModelConfig(
+        val mockLLMService = LLMService(ModelConfig(
             provider = LLMProviderType.DEEPSEEK,
             modelName = "deepseek-chat",
             apiKey = "test-key"
