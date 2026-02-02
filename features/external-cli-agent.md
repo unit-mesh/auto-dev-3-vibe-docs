@@ -45,16 +45,16 @@ The External CLI Agent feature enables users to leverage third-party coding agen
 ### Claude Code (`claude` CLI)
 
 - **Binary**: `claude`
-- **Non-interactive mode**: `claude -p --output-format text "<prompt>"`
-- **Interactive mode**: `claude "<prompt>"`
-- **Requirements**: Install via Anthropic's official CLI
+- **Non-interactive mode**: `claude -p --output-format text --add-dir <path> "<prompt>"`
+- **Interactive mode**: `claude --add-dir <path> "<prompt>"`
+- **Requirements**: Install via Anthropic's official CLI, authenticate with `claude setup-token`
 
 ### OpenAI Codex (`codex` CLI)
 
 - **Binary**: `codex`
-- **Non-interactive mode**: `codex exec --color auto -a never -s workspace-write -C <path> "<prompt>"`
-- **Interactive mode**: `codex -C <path> --no-alt-screen "<prompt>"`
-- **Requirements**: Install via OpenAI's official CLI or build from source
+- **Non-interactive mode**: `codex exec --full-auto --color auto -C <path> "<prompt>"`
+- **Interactive mode**: `codex --full-auto -C <path> --no-alt-screen "<prompt>"`
+- **Requirements**: Install via OpenAI's official CLI, authenticate with `codex login --with-api-key`
 
 ## Usage
 
